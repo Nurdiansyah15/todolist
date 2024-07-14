@@ -1,7 +1,7 @@
 # Project: Aplikasi To Do List
 
 ## Apllication Properties
-![img.png](img.png)
+![img.png](img1.png)
 
 ## Initialization DB
 ```bash
