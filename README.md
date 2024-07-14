@@ -1,4 +1,26 @@
 # Project: Aplikasi To Do List
+
+## Apllication Properties
+![img.png](img.png)
+
+## Initialization DB
+```bash
+insert into category (name) values ('Personal');
+insert into category (name) values ('Work');
+insert into category (name) values ('Study');
+```
+
+## Choosen Role (Enum)
+
+- ADMIN : "admin"
+- USER : "user"
+
+
+## Start Application
+```bash
+mvn spring-boot:run
+```
+
 API collection for Aplikasi To Do List
 
 published at : https://documenter.getpostman.com/view/33287012/2sA3kPo4LB
