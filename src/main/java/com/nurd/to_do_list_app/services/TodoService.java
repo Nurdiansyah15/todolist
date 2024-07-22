@@ -31,7 +31,7 @@ public class TodoService {
         todo.setDeadline(obj.getDeadline());
         todo.setCompleted(obj.getCompleted());
 
-        User foundUser = userRepo.findById(obj.getUserId()).orElseThrow(() -> new RuntimeException("Todo not found"));
+        User foundUser = userRepo.findById(obj.getUserUuid()).orElseThrow(() -> new RuntimeException("Todo not found"));
         todo.setUser(foundUser);
 
         Category foundCategory = categoryRepo.findById(obj.getCategoryId()).orElseThrow(() -> new RuntimeException("Category not found"));
@@ -81,7 +81,7 @@ public class TodoService {
         foundTodo.setDeadline(obj.getDeadline());
         foundTodo.setCompleted(obj.getCompleted());
 
-        User foundUser = userRepo.findById(obj.getUserId()).orElseThrow(() -> new RuntimeException("Todo not found"));
+        User foundUser = userRepo.findById(obj.getUserUuid()).orElseThrow(() -> new RuntimeException("Todo not found"));
         foundTodo.setUser(foundUser);
 
         Category foundCategory = categoryRepo.findById(obj.getCategoryId()).orElseThrow(() -> new RuntimeException("Category not found"));

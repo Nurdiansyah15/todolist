@@ -24,7 +24,7 @@ public class Comment {
     private Todo todo;
 
     @ManyToOne
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "user_uuid")
     @JsonIgnore
     private User user;
 }

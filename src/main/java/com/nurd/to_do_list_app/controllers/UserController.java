@@ -9,6 +9,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.UUID;
+
 
 @RestController
 @RequestMapping("/api/users")
@@ -22,8 +24,8 @@ public class UserController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<?> findById(@Valid @PathVariable Long id) {
-        return ResponseBuilder.renderJSON(service.findById(id), "user found successfully", HttpStatus.OK);
+    public ResponseEntity<?> findById(@Valid @PathVariable UUID uuid) {
+        return ResponseBuilder.renderJSON(service.findById(uuid), "user found successfully", HttpStatus.OK);
     }
 
     @PostMapping
@@ -32,13 +34,13 @@ public class UserController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> update(@Valid @PathVariable Long id, @Valid @RequestBody UserDto obj) {
-        return ResponseBuilder.renderJSON(service.update(id, obj), "user updated successfully", HttpStatus.ACCEPTED);
+    public ResponseEntity<?> update(@Valid @PathVariable UUID uuid, @Valid @RequestBody UserDto obj) {
+        return ResponseBuilder.renderJSON(service.update(uuid, obj), "user updated successfully", HttpStatus.ACCEPTED);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteById(@Valid @PathVariable Long id) {
-        service.deleteById(id);
+    public ResponseEntity<?> deleteById(@Valid @PathVariable UUID uuid) {
+        service.deleteById(uuid);
         return ResponseBuilder.renderJSON(null, "user deleted successfully", HttpStatus.OK);
     }
 }

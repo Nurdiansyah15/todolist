@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class UserTodoService {
@@ -35,35 +36,35 @@ public class UserTodoService {
         this.todoService = todoService;
     }
 
-    public List<Todo> findAllByUserId(Long id, String search, Boolean completed, String category) {
+    public List<Todo> findAllByUserId(UUID uuid, String search, Boolean completed, String category) {
         List<Todo> todos = todoService.findAll(search, completed, category); // <1>
         List<Todo> result = new ArrayList<>();
         for (var todo : todos) {
-            if (todo.getUser().getId().equals(id)) {
+            if (todo.getUser().getUuid().equals(uuid)) {
                 result.add(todo);
             }
         }
         return result;
     }
 
-    public List<Comment> findAllCommentsByUserIdAndTodoId(Long userId, Long todoId) {
+    public List<Comment> findAllCommentsByUserIdAndTodoId(UUID userUuid, Long todoId) {
         List<Comment> comments = commentRepo.findAll(); // <1>
         List<Comment> result = new ArrayList<>();
         for (var comment : comments) {
-            if (comment.getUser().getId().equals(userId) && comment.getTodo().getId().equals(todoId)) {
+            if (comment.getUser().getUuid().equals(userUuid) && comment.getTodo().getId().equals(todoId)) {
                 result.add(comment);
             }
         }
         return result;
     }
 
-    public Todo createTodoByUserId(Long userId, UserTodoDto todo) {
+    public Todo createTodoByUserId(UUID userUuid, UserTodoDto todo) {
         Todo newTodo = new Todo();
         newTodo.setTask(todo.getTask());
         newTodo.setDeadline(todo.getDeadline());
         newTodo.setCompleted(false);
 
-        User foundUser = userRepo.findById(userId).orElseThrow(() -> new RuntimeException("User not found"));
+        User foundUser = userRepo.findById(userUuid).orElseThrow(() -> new RuntimeException("User not found"));
         newTodo.setUser(foundUser);
 
         Category foundCategory = categoryRepo.findById(todo.getCategoryId()).orElseThrow(() -> new RuntimeException("Category not found"));
@@ -72,12 +73,12 @@ public class UserTodoService {
         return todoRepo.save(newTodo);
     }
 
-    public Todo updateTodoByUserId(Long userId, Long id, UserTodoDto todo) {
+    public Todo updateTodoByUserId(UUID userUuid, Long id, UserTodoDto todo) {
         Todo foundTodo = todoRepo.findById(id).orElseThrow(() -> new RuntimeException("Todo not found"));
         foundTodo.setTask(todo.getTask());
         foundTodo.setDeadline(todo.getDeadline());
 
-        User foundUser = userRepo.findById(userId).orElseThrow(() -> new RuntimeException("User not found"));
+        User foundUser = userRepo.findById(userUuid).orElseThrow(() -> new RuntimeException("User not found"));
         foundTodo.setUser(foundUser);
 
         Category foundCategory = categoryRepo.findById(todo.getCategoryId()).orElseThrow(() -> new RuntimeException("Category not found"));
@@ -86,33 +87,33 @@ public class UserTodoService {
         return todoRepo.save(foundTodo);
     }
 
-    public Todo checkedTodoByUserId(Long userId, Long id, UserTodoChekedDto todo) {
+    public Todo checkedTodoByUserId(UUID userUuid, Long id, UserTodoChekedDto todo) {
         Todo foundTodo = todoRepo.findById(id).orElseThrow(() -> new RuntimeException("Todo not found"));
         foundTodo.setCompleted(todo.getCompleted());
 
-        User foundUser = userRepo.findById(userId).orElseThrow(() -> new RuntimeException("User not found"));
+        User foundUser = userRepo.findById(userUuid).orElseThrow(() -> new RuntimeException("User not found"));
         foundTodo.setUser(foundUser);
 
         return todoRepo.save(foundTodo);
     }
 
-    public Comment createCommentByUserIdTodoId(Long userId, Long todoId, String comment) {
+    public Comment createCommentByUserIdTodoId(UUID userUuid, Long todoId, String comment) {
         Todo foundTodo = todoRepo.findById(todoId).orElseThrow(() -> new RuntimeException("Todo not found"));
         Comment newComment = new Comment();
         newComment.setBody(comment);
         newComment.setTodo(foundTodo);
-        newComment.setUser(userRepo.findById(userId).orElseThrow(() -> new RuntimeException("User not found")));
+        newComment.setUser(userRepo.findById(userUuid).orElseThrow(() -> new RuntimeException("User not found")));
         return commentRepo.save(newComment);
     }
 
-    public Comment updateCommentByUserIdTodoId(Long userId, Long todoId, Long commentId, String comment) {
+    public Comment updateCommentByUserIdTodoId(UUID userUuid, Long todoId, Long commentId, String comment) {
         Comment foundComment = commentRepo.findById(commentId).orElseThrow(() -> new RuntimeException("Comment not found"));
         foundComment.setBody(comment);
 
         Todo foundTodo = todoRepo.findById(todoId).orElseThrow(() -> new RuntimeException("Todo not found"));
         foundComment.setTodo(foundTodo);
 
-        User foundUser = userRepo.findById(userId).orElseThrow(() -> new RuntimeException("User not found"));
+        User foundUser = userRepo.findById(userUuid).orElseThrow(() -> new RuntimeException("User not found"));
         foundComment.setUser(foundUser);
 
         return commentRepo.save(foundComment);

@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.UUID;
 
 @Service
 public class UserService {
@@ -41,12 +42,12 @@ public class UserService {
         return userRepo.findAll();
     }
 
-    public User findById(Long id) {
-        return userRepo.findById(id).orElseThrow(() -> new RuntimeException("User not found"));
+    public User findById(UUID uuid) {
+        return userRepo.findById(uuid).orElseThrow(() -> new RuntimeException("User not found"));
     }
 
-    public User update(Long id, UserDto obj) {
-        User foundUser = findById(id);
+    public User update(UUID uuid, UserDto obj) {
+        User foundUser = findById(uuid);
         foundUser.setUsername(obj.getUsername().isEmpty() ? foundUser.getUsername() : obj.getUsername());
         foundUser.setEmail(obj.getEmail().isEmpty() ? foundUser.getEmail() : obj.getEmail());
         foundUser.setPassword(obj.getPassword().isEmpty() ? foundUser.getPassword() : obj.getPassword());
@@ -61,8 +62,8 @@ public class UserService {
         return userRepo.save(foundUser);
     }
 
-    public void deleteById(Long id) {
-        userRepo.deleteById(id);
+    public void deleteById(UUID uuid) {
+        userRepo.deleteById(uuid);
     }
 
 }

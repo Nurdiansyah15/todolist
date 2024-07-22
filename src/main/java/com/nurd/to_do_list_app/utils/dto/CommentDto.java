@@ -6,13 +6,15 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.UUID;
+
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
 public class CommentDto {
     @NotNull
-    private Long userId;
+    private UUID userUuid;
     @NotNull
     private Long todoId;
     @NotNull

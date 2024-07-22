@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.Date;
+import java.util.UUID;
 
 @Getter
 @Setter
@@ -26,7 +27,7 @@ public class TodoDto {
     private Boolean completed;
 
     @NotNull
-    private Long userId;
+    private UUID userUuid;
 
     @NotNull
     private Long categoryId;

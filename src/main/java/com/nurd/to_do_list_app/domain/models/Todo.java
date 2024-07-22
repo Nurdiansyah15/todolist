@@ -24,7 +24,7 @@ public class Todo {
     private Boolean completed;
 
     @ManyToOne
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "user_uuid")
     private User user;
 
 

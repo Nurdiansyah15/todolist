@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
 import java.util.Set;
+import java.util.regex.Pattern;
 
 @Service
 public class AuthService {
@@ -25,8 +26,8 @@ public class AuthService {
     private JwtService jwtService;
 
     public AuthDto.ResponseRegisterDto register(AuthDto.RequestRegisterDto requestRegisterDto) {
-        if (userRepo.findByUsername(requestRegisterDto.getUsername()).isPresent()) {
-            throw new IllegalStateException("username already exists");
+        if (userRepo.findByEmail(requestRegisterDto.getEmail()).isPresent()) {
+            throw new IllegalStateException("email already exists");
         }
 
         User user = new User();
@@ -50,17 +51,19 @@ public class AuthService {
 
         user.setRoles(roles);
         userRepo.save(user);
-        return new AuthDto.ResponseRegisterDto(user.getId(), user.getUsername(), user.getEmail(), user.getRoles());
+        return new AuthDto.ResponseRegisterDto(user.getUuid(), user.getUsername(), user.getEmail(), user.getRoles());
     }
 
     public AuthDto.ResponseLoginDto login(AuthDto.RequestLoginDto requestLoginDto) {
-        User user = userRepo.findByUsername(requestLoginDto.getUsername()).orElseThrow(() -> new IllegalStateException("invalid username or password"));
+
+        User user = userRepo.findByEmail(requestLoginDto.getEmail()).orElseThrow(() -> new IllegalStateException("invalid credentials"));
+
         if (!passwordEncoder.matches(requestLoginDto.getPassword(), user.getPassword())) {
             throw new IllegalStateException("invalid username or password");
         }
 
         String jwt = jwtService.generateToken(user);
 
-        return new AuthDto.ResponseLoginDto(user.getId(), jwt);
+        return new AuthDto.ResponseLoginDto(user.getUuid(), jwt);
     }
 }

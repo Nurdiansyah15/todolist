@@ -11,6 +11,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.Set;
+import java.util.UUID;
 
 
 public class AuthDto {
@@ -20,10 +21,12 @@ public class AuthDto {
     @AllArgsConstructor
     @NoArgsConstructor
     public static class RequestLoginDto {
+
         @NotNull
-        private String username;
+        private String email;
         @NotNull
         private String password;
+
     }
 
     @Getter
@@ -47,7 +50,7 @@ public class AuthDto {
     @AllArgsConstructor
     @NoArgsConstructor
     public static class ResponseLoginDto {
-        private Long id;
+        private UUID uuid;
         private String token;
     }
 
@@ -56,7 +59,7 @@ public class AuthDto {
     @AllArgsConstructor
     @NoArgsConstructor
     public static class ResponseRegisterDto {
-        private Long id;
+        private UUID uuid;
         private String username;
         private String email;
         private Set<Role> roles;

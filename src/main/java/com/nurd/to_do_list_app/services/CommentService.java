@@ -29,7 +29,7 @@ public class CommentService {
         Todo foundTodo = todoRepo.findById(obj.getTodoId()).orElseThrow(() -> new RuntimeException("Todo not found"));
         comment.setTodo(foundTodo);
 
-        User foundUser = userRepo.findById(obj.getUserId()).orElseThrow(() -> new RuntimeException("User not found"));
+        User foundUser = userRepo.findById(obj.getUserUuid()).orElseThrow(() -> new RuntimeException("User not found"));
         comment.setUser(foundUser);
 
         return commentRepo.save(comment);
@@ -50,7 +50,7 @@ public class CommentService {
         Todo foundTodo = todoRepo.findById(obj.getTodoId()).orElseThrow(() -> new RuntimeException("Todo not found"));
         foundComment.setTodo(foundTodo);
 
-        User foundUser = userRepo.findById(obj.getUserId()).orElseThrow(() -> new RuntimeException("User not found"));
+        User foundUser = userRepo.findById(obj.getUserUuid()).orElseThrow(() -> new RuntimeException("User not found"));
         foundComment.setUser(foundUser);
 
         return commentRepo.save(foundComment);
